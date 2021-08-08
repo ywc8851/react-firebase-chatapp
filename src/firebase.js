@@ -1,7 +1,8 @@
-import firebase from "firbase/app";
+import firebase from "firebase";
 import "firebase/auth";
 import "firebase/database";
 import "firebase/storage";
+
 var firebaseConfig = {
   apiKey: "AIzaSyD8V6Y6Gm_2lsNYPC-GwO6dr8TSbPgH55U",
   authDomain: "chat-app-13d3f.firebaseapp.com",
