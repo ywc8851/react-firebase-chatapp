@@ -68,7 +68,7 @@ function MessageForm() {
   const handleOpenImageRef = () => {
     inputOpenImageRef.current.click();
   };
-
+  // DM방이랑 공개방이랑 storage 다르게하기 위해서 만든함수
   const getPath = () => {
     if (isPrivateChatRoom) {
       return `/message/private/${chatRoom.id}`;
@@ -81,7 +81,7 @@ function MessageForm() {
     const file = event.target.files[0];
     if (!file) return;
     //const filePath = `${getPath()}/${file.name}`;
-    const filePath = `message/public/${file.name}`;
+    const filePath = `${getPath()}/${file.name}`;
     const metadata = { contentType: mime.lookup(file.name) };
     setLoading(true);
     try {

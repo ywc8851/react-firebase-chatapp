@@ -15,6 +15,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useSelector } from "react-redux";
 
 function MessageHeader({ handleSearchChange }) {
+  // 방정보   가져오기
   const chatRoom = useSelector((state) => state.chatRoom.currentChatRoom);
   const isPrivateChatRoom = useSelector(
     (state) => state.chatRoom.isPrivateChatRoom
@@ -34,6 +35,7 @@ function MessageHeader({ handleSearchChange }) {
         <Row>
           <Col>
             <h2>
+              {/* 공개방이랑 DM방 아이콘 다르게 구별 */}
               {isPrivateChatRoom ? (
                 <FaLock style={{ marginBottom: "10px" }} />
               ) : (

@@ -79,7 +79,6 @@ export class MainPanel extends Component {
   render() {
     const { messages, searchTerm, searchResults } = this.state;
 
-    console.log("searchTerm", searchTerm);
     return (
       <div style={{ padding: "2rem 2rem 0 2rem" }}>
         <MessageHeader handleSearchChange={this.handleSearchChange} />
