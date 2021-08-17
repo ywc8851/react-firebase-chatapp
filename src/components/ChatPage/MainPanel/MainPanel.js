@@ -70,15 +70,19 @@ export class MainPanel extends Component {
   userPostsCount = (messages) => {
     let userPosts = messages.reduce((acc, message) => {
       if (message.user.name in acc) {
-        acc[message.user.name].count += 1;
+        // 이미 acc에 있는 사용자
+        acc[message.user.name].count += 1; // 메시지 보낸 횟수 +1
       } else {
+        // acc에 없는 사용자
         acc[message.user.name] = {
+          // 유저의 정보저장
           image: message.user.image,
-          count: 1,
+          count: 1, // 첫메시지 이므로 count는 1
         };
       }
       return acc;
     }, {});
+    // MessageHeader 컴포넌트에서 userPosts를 사용해야 하기 때문에 리덕스에 넣어줌
     this.props.dispatch(setUserPosts(userPosts));
   };
   // 메시지를 화면에 보여줌

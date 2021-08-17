@@ -22,10 +22,11 @@ function MessageHeader({ handleSearchChange }) {
   const isPrivateChatRoom = useSelector(
     (state) => state.chatRoom.isPrivateChatRoom
   );
-  const [isFavorited, setIsFavorited] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false); // 즐겨찾기 유무를 알려주는 state
   const usersRef = firebase.database().ref("users");
-  const user = useSelector((state) => state.user.currentUser); //현재사용자
-  const userPosts = useSelector((state) => state.chatRoom.userPosts);
+  const user = useSelector((state) => state.user.currentUser); // 현재사용자
+  const userPosts = useSelector((state) => state.chatRoom.userPosts); // 채팅방에서 각 유저가보낸 메시지수
+
   useEffect(() => {
     if (chatRoom && user) {
       addFavoriteListener(chatRoom.id, user.uid);
@@ -38,13 +39,13 @@ function MessageHeader({ handleSearchChange }) {
       .child("favorited")
       .once("value")
       .then((data) => {
+        // 좋아요 누른방이 있는경우
         if (data.val() !== null) {
-          // 좋아요 누른방이 있는경우
           const chatRoomIds = Object.keys(data.val());
           // data.val()은 채팅방정보를 가르킴
           // chatRoomIds는 좋아요를 누른 채탕방들
           const isAlreadyFavorited = chatRoomIds.includes(chatRoomId);
-          // chatRoomId가 chatRoomIds 에 있으면 좋아요눌러져있는상태
+          // chatRoomId가 chatRoomIds 에 있으면 favorite 상태(true)
           setIsFavorited(isAlreadyFavorited);
         }
       });
@@ -78,9 +79,10 @@ function MessageHeader({ handleSearchChange }) {
       setIsFavorited((prev) => !prev); // 하트 상태 변경
     }
   };
+  // 채팅방에서 각각의 사용자가 몇개의 메시지를 보냈는지 보여주는 함수
   const renderUserPosts = (userPosts) =>
-    Object.entries(userPosts)
-      .sort((a, b) => b[1].count - a[1].count)
+    Object.entries(userPosts) // userPosts라는 객체를 배열로 바꿔줌
+      .sort((a, b) => b[1].count - a[1].count) // 내림차순정렬
       .map(([key, val], i) => (
         <Media key={i}>
           <img
@@ -122,6 +124,7 @@ function MessageHeader({ handleSearchChange }) {
               {chatRoom && chatRoom.name}
               {!isPrivateChatRoom && (
                 <span style={{ cursor: "pointer" }} onClick={handleFavorite}>
+                  {/* 즐겨찾기를 구분할 수 있게 아이콘 설정*/}
                   {isFavorited ? (
                     <MdFavorite style={{ marginBottom: "10px" }} />
                   ) : (
