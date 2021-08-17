@@ -4,6 +4,7 @@ import Message from "./Message";
 import MessageForm from "./MessageForm";
 import { connect } from "react-redux"; // class형식에서 리덕스사용하기
 import firebase from "../../../firebase";
+import { setUserPosts } from "../../../redux/actions/chatRoom_action";
 export class MainPanel extends Component {
   state = {
     messages: [],
@@ -63,7 +64,22 @@ export class MainPanel extends Component {
           messages: messagesArray,
           messagesLoading: false,
         });
+        this.userPostsCount(messagesArray);
       });
+  };
+  userPostsCount = (messages) => {
+    let userPosts = messages.reduce((acc, message) => {
+      if (message.user.name in acc) {
+        acc[message.user.name].count += 1;
+      } else {
+        acc[message.user.name] = {
+          image: message.user.image,
+          count: 1,
+        };
+      }
+      return acc;
+    }, {});
+    this.props.dispatch(setUserPosts(userPosts));
   };
   // 메시지를 화면에 보여줌
   renderMessages = (messages) =>
