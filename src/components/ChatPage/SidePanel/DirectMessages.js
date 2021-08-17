@@ -21,10 +21,10 @@ export class DirectMessages extends Component {
   }
 
   addUsersListeners = (currentUserId) => {
-    // const { usersRef } = this.state;
+    const { usersRef } = this.state;
     let usersArray = [];
     // user 테이블에 add될때 리스너가 데이터가져옴
-    this.state.usersRef.on("child_added", (DataSnapshot) => {
+    usersRef.on("child_added", (DataSnapshot) => {
       // 현재사용자는 제외 , DataSnapshot.key로 uid 불러옴
       if (currentUserId !== DataSnapshot.key) {
         let user = DataSnapshot.val();
@@ -78,6 +78,7 @@ export class DirectMessages extends Component {
     ));
 
   render() {
+    const { users } = this.state;
     return (
       <div>
         <span style={{ display: "flex", alignItems: "center" }}>
@@ -85,7 +86,7 @@ export class DirectMessages extends Component {
         </span>
         {/* DM 목록보여줌*/}
         <ul style={{ listStyleType: "none", padding: 0 }}>
-          {this.renderDirectMessages(this.state.users)}
+          {this.renderDirectMessages(users)}
         </ul>
       </div>
     );

@@ -13,7 +13,9 @@ function Message({ message, user }) {
   };
   // 자신이 보낸 메시지이면 회색처리
   const isMessageMine = (message, user) => {
-    return message.user.id === user.uid;
+    if (user) {
+      return message.user.id === user.uid;
+    }
   };
 
   return (

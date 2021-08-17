@@ -79,7 +79,7 @@ function MessageForm() {
   // 파일업로드시 firebase로 보냄
   const handleUploadImage = (event) => {
     const file = event.target.files[0];
-    if (!file) return;
+    // if (!file) return;
     //const filePath = `${getPath()}/${file.name}`;
     const filePath = `${getPath()}/${file.name}`;
     const metadata = { contentType: mime.lookup(file.name) };
