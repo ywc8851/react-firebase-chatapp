@@ -16,6 +16,7 @@ function MessageForm() {
   const messagesRef = firebase.database().ref("messages"); // 테이블명이 messages인 데이터베이스 불러옴
   const inputOpenImageRef = useRef();
   const storageRef = firebase.storage().ref();
+  const typingRef = firebase.database().ref("typing");
   const isPrivateChatRoom = useSelector(
     (state) => state.chatRoom.isPrivateChatRoom
   );
@@ -53,6 +54,8 @@ function MessageForm() {
     //firebase에 메시지를 저장하는 부분
     try {
       await messagesRef.child(chatRoom.id).push().set(createMessage()); // child안에는 채팅방 아이디 -> 리덕스에서 가져옴
+      // 메시지 보내고난다음엔 typingRef에서 제거(타이핑상태X)
+      typingRef.child(chatRoom.id).child(user.uid).remove();
       setLoading(false); // 버튼다시 활성화
       setContent("");
       setErrors([]);
@@ -120,12 +123,22 @@ function MessageForm() {
       alert(error);
     }
   };
-
+  // 어떠한 사용자가 지금 메시지를 보내려고하는지 보여줌
+  const handleKeyDown = () => {
+    if (content) {
+      // 타이핑하고있을때
+      typingRef.child(chatRoom.id).child(user.uid).set(user.displayName);
+    } else {
+      // 타이핑하고있지않을때 지워줌
+      typingRef.child(chatRoom.id).child(user.uid).remove();
+    }
+  };
   return (
     <div>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="exampleForm.ControlTextarea1">
           <Form.Control
+            onKeyDown={handleKeyDown}
             value={content}
             onChange={handleChange}
             as="textarea"
