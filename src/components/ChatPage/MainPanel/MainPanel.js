@@ -5,7 +5,11 @@ import MessageForm from "./MessageForm";
 import { connect } from "react-redux"; // class형식에서 리덕스사용하기
 import firebase from "../../../firebase";
 import { setUserPosts } from "../../../redux/actions/chatRoom_action";
+import Skeleton from "../../../commons/components/Skeleton";
+
 export class MainPanel extends Component {
+  messageEndRef = React.createRef();
+
   state = {
     messages: [],
     messagesRef: firebase.database().ref("messages"), // db에 접근
@@ -28,6 +32,14 @@ export class MainPanel extends Component {
       this.addTypingListeners(chatRoom.id);
     }
   }
+
+  // 타이핑할때 스크롤 자동으로 내려감
+  componentDidUpdate() {
+    if (this.messageEndRef) {
+      this.messageEndRef.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
   componentWillUnmount() {
     this.state.messagesRef.off();
     this.removeListeners(this.state.listenerLists);
@@ -164,8 +176,23 @@ export class MainPanel extends Component {
     typingUsers.map((user) => (
       <span>{user.name}님이 채팅을 입력하고 있습니다...</span>
     ));
+  // 메시지 로딩될때 까지 skeleton 보여주기
+  renderMessageSkeleton = (loading) =>
+    loading && (
+      <>
+        {[...Array(10)].map((v, i) => (
+          <Skeleton key={i} />
+        ))}
+      </>
+    );
   render() {
-    const { messages, searchTerm, searchResults, typingUsers } = this.state;
+    const {
+      messages,
+      searchTerm,
+      searchResults,
+      typingUsers,
+      messagesLoading,
+    } = this.state;
 
     return (
       <div style={{ padding: "2rem 2rem 0 2rem" }}>
@@ -182,12 +209,16 @@ export class MainPanel extends Component {
             overflowY: "auto",
           }}
         >
+          {this.renderMessageSkeleton(messagesLoading)}
           {/* 검색조건에 맞는게 있으면 보여주고 없으면 현재 대화방보여줌 */}
           {searchTerm
             ? this.renderMessages(searchResults)
             : this.renderMessages(messages)}
           {/* 타이핑 치고있는 유저 보여주는 부분*/}
           {this.renderTypingUsers(typingUsers)}
+
+          {/* 이 자리를 계속참조함 */}
+          <div ref={(node) => (this.messageEndRef = node)} />
         </div>
 
         <MessageForm />

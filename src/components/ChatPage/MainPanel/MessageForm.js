@@ -123,8 +123,12 @@ function MessageForm() {
       alert(error);
     }
   };
-  // 어떠한 사용자가 지금 메시지를 보내려고하는지 보여줌
-  const handleKeyDown = () => {
+  const handleKeyDown = (event) => {
+    // ctrl + enter 키로 메시지 전송
+    if (event.ctrlKey && event.keyCode === 13) {
+      handleSubmit();
+    }
+    // 어떠한 사용자가 지금 메시지를 보내려고하는지 보여줌
     if (content) {
       // 타이핑하고있을때
       typingRef.child(chatRoom.id).child(user.uid).set(user.displayName);
