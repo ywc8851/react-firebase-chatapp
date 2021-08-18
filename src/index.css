@@ -1,9 +1,3 @@
-body {
-  background: #0e101c;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
-}
-
 .auth-wrapper {
   display: flex;
   flex-direction: column;
@@ -53,14 +47,14 @@ body {
   line-height: 2;
   text-align: left;
   display: block;
- margin: 5px 0 ;
+  margin: 5px 0;
   font-size: 14px;
   font-weight: 200;
 }
 
 .auth-wrapper button[type="submit"],
 .auth-wrapper input[type="submit"] {
-  background: #7A84EB;
+  background: #7a84eb;
   color: white;
   text-transform: uppercase;
   border: none;
@@ -72,7 +66,7 @@ body {
 }
 
 .message-form-button {
-  background: #7A84EB;
+  background: #7a84eb;
   color: white;
   text-transform: uppercase;
   border: none;
@@ -82,7 +76,6 @@ body {
   font-weight: 100;
   letter-spacing: 10px;
 }
-
 
 .message-form-button:hover {
   background: #636ee6;
